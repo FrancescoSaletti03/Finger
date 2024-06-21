@@ -1,0 +1,3 @@
+/home/francesco-saletti/CLionProjects/Finger/cmake-build-debug/CMakeFiles/Finger.dir
+/home/francesco-saletti/CLionProjects/Finger/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/francesco-saletti/CLionProjects/Finger/cmake-build-debug/CMakeFiles/rebuild_cache.dir
