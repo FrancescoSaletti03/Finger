@@ -26,6 +26,8 @@ struct user *explorePwd(){
         currentUser -> nomeReale = stringCopy( pwd -> pw_gecos );
         currentUser -> directoryPrincipale = stringCopy( pwd -> pw_dir );
         currentUser -> shellUtente = stringCopy( pwd -> pw_shell );
+        currentUser -> primoLog = NULL;
+        currentUser -> ultimoLog = NULL;
 
         if(lastUser != NULL) {
             lastUser -> prossimoUtente = currentUser;
