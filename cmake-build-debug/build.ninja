@@ -61,6 +61,12 @@ build CMakeFiles/Finger.dir/SOExplorer.c.o: C_COMPILER__Finger_unscanned_Debug /
   OBJECT_DIR = CMakeFiles/Finger.dir
   OBJECT_FILE_DIR = CMakeFiles/Finger.dir
 
+build CMakeFiles/Finger.dir/Print.c.o: C_COMPILER__Finger_unscanned_Debug /home/francesco-saletti/CLionProjects/Finger/Print.c || cmake_object_order_depends_target_Finger
+  DEP_FILE = CMakeFiles/Finger.dir/Print.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/Finger.dir
+  OBJECT_FILE_DIR = CMakeFiles/Finger.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Finger
@@ -69,7 +75,7 @@ build CMakeFiles/Finger.dir/SOExplorer.c.o: C_COMPILER__Finger_unscanned_Debug /
 #############################################
 # Link the executable Finger
 
-build Finger: C_EXECUTABLE_LINKER__Finger_Debug CMakeFiles/Finger.dir/finger.c.o CMakeFiles/Finger.dir/SOExplorer.c.o
+build Finger: C_EXECUTABLE_LINKER__Finger_Debug CMakeFiles/Finger.dir/finger.c.o CMakeFiles/Finger.dir/SOExplorer.c.o CMakeFiles/Finger.dir/Print.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/Finger.dir
   POST_BUILD = :

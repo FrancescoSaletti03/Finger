@@ -10,6 +10,7 @@
 #include <time.h>
 #include "finger.h"
 #include "SOExplorer.h"
+#include <unistd.h>
 
 struct user *explorePwd(){
 
@@ -51,11 +52,11 @@ void exploreUTMP(struct user *firstUser){
 
     setutent();
     while ((utmpData = getutent()) != NULL) {
-
         currentUser = firstUser;
 
         while(currentUser != NULL) {
-            if(strcmp(utmpData -> ut_user, currentUser -> username) == 0){
+            if(strcmp(utmpData -> ut_user, currentUser -> username) == 0)
+            {
                 struct log *Temp = malloc(sizeof(struct log));
                 Temp -> luogo = stringCopy(utmpData -> ut_line);
                 Temp -> stato = LOGGATO;
@@ -73,7 +74,8 @@ void exploreUTMP(struct user *firstUser){
                     currentUser -> ultimoLog -> prossimoLog = Temp;
                     currentUser -> ultimoLog = Temp;
                 }
-            }
+                currentUser = NULL;
+            }else
             currentUser = currentUser -> prossimoUtente;
         }
     }
@@ -86,6 +88,7 @@ time_t calcolateIdle(char var2[]){
     temp = malloc(size);
     strcat(temp,_PATH_DEV);
     strcat(temp,var2);
+    if(access(temp,F_OK) != 0) return 0; //controllo necessario per vedere se il file esiste (perchè in alcune distribuzioni di linux, ci sono console di accesso non presenti in dev)
     stat(temp,info);
     return time(NULL) - info -> st_mtim.tv_sec;
 }
@@ -94,7 +97,7 @@ char *stringCopy(char *var2)
 {
     char *var1;
     int size = sizeof(char) * (strlen(var2) + 1);
-    var1 = malloc(size);setutent();
+    var1 = malloc(size);
     strcpy(var1,var2);
     return var1;
 }

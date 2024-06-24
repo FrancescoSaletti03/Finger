@@ -7,4 +7,6 @@ add_executable(Finger finger.c
         finger.h
         SOExplorer.c
         SOExplorer.h
+        Print.c
+        Print.h
 )
