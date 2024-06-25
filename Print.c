@@ -8,7 +8,7 @@
 
 void printS(struct user *firstUser)
 {
-    printf("%-18s %-15s %-8s %-8s %-15s \n","Login","Name", "Tty", "Idle", "Login Time");
+    printf("%-32s %-32s %-8s %-8s %-15s \n","Login","Name", "Tty", "Idle", "Login Time");
     struct user *currentUser = firstUser;
     struct log *temp;
     while (currentUser != NULL)
@@ -18,7 +18,7 @@ void printS(struct user *firstUser)
         {
             if(temp-> stato == LOGGATO )
             {
-                printf("%-18s %-15s %-8s %-8s %-15s", currentUser -> username, currentUser ->nomeReale, temp -> luogo, printIdle(temp->idleTime), ctime(&temp -> ultimoTempoLog) );
+                printf("%-32s %-32s %-8s %-8s %-15s", currentUser -> username, currentUser ->nomeReale, temp -> luogo, printIdle(temp->idleTime), ctime(&temp -> ultimoTempoLog) );
             }
             temp = temp -> prossimoLog;
         }
@@ -29,11 +29,16 @@ void printL(){}
 
 char *printIdle(time_t idle)
 {
-    int ore;
-    int minuti;
-    ore = (int) (idle / 3600000);
-    minuti = (int)((idle-ore*3600)/60000);
+    const long ore = idle / 3600;
+    const long minuti = (idle-ore*3600)/60;
     char *stringa = malloc(sizeof(char) * 8);
-    sprintf(stringa,"%d:%d",ore,minuti);
+    if(ore != 0)
+    {
+        sprintf(stringa,"%ld:%ld",ore,minuti);
+    }
+    else
+    {
+        sprintf(stringa,"%ld",minuti);
+    }
     return  stringa;
 }

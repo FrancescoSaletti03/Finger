@@ -84,15 +84,17 @@ void exploreUTMP(struct user *firstUser){
 }
 
 time_t calcolateIdle(char var2[]){
-    struct stat *info;
+    struct stat *info = malloc(sizeof(struct stat));
     char *temp;
     int size = sizeof(char) * (strlen(var2) + strlen(_PATH_DEV) + 1 );
-    temp = malloc(size);
-    strcat(temp,_PATH_DEV);
+    time_t result;
+    temp = malloc(strlen(var2));
+    strcpy(temp,_PATH_DEV);
     strcat(temp,var2);
     if(access(temp,F_OK) != 0) return 0; //controllo necessario per vedere se il file esiste (perchè in alcune distribuzioni di linux, ci sono console di accesso non presenti in dev)
     stat(temp,info);
-    return time(NULL) - info -> st_mtim.tv_sec;
+    result = time(NULL) - info -> st_mtim.tv_sec;
+    return  result;
 }
 
 char *stringCopy(char *var2)
