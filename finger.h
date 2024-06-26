@@ -16,6 +16,7 @@ struct user{
     char *nomeReale;
     char *directoryPrincipale;
     char *shellUtente;
+    enum tipiDiStato stato;
     struct log *primoLog,*ultimoLog; //puntatori al primo  e ultimo log dell`utente nella lista linkata dei log
     struct  user *prossimoUtente; // puntatore al prossimo utente nella lista di utenti
 };
@@ -23,7 +24,6 @@ struct user{
 
 struct log{
     char *luogo;
-    enum tipiDiStato stato;
     time_t ultimoTempoLog;
     time_t idleTime;
     struct log *prossimoLog; //puntatore al prossimo log dell`utente nella lista linkata dei log

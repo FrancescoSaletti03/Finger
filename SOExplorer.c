@@ -26,6 +26,7 @@ struct user *explorePwd(){
         currentUser -> nomeReale = stringCopy( pwd -> pw_gecos );
         currentUser -> directoryPrincipale = stringCopy( pwd -> pw_dir );
         currentUser -> shellUtente = stringCopy( pwd -> pw_shell );
+        currentUser -> stato = NONLOGGATO;
         currentUser -> primoLog = NULL;
         currentUser -> ultimoLog = NULL;
 
@@ -61,7 +62,7 @@ void exploreUTMP(struct user *firstUser){
             {
                 struct log *Temp = malloc(sizeof(struct log));
                 Temp -> luogo = stringCopy(utmpData -> ut_line);
-                Temp -> stato = LOGGATO;
+                currentUser -> stato = LOGGATO;
                 Temp -> ultimoTempoLog = utmpData -> ut_time;
                 Temp -> idleTime = calcolateIdle(utmpData -> ut_line);
                 Temp -> prossimoLog = NULL;

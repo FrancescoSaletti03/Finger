@@ -7,5 +7,6 @@
 #include <time.h>
 #include "finger.h"
 void printS(struct user *firstUser);
-char *printIdle(time_t idle);
+void printL(struct user *firstUser);
+char *printIdle(time_t idle,char p);
 #endif //PRINT_H
