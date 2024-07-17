@@ -29,4 +29,6 @@ struct log{
     struct log *prossimoLog; //puntatore al prossimo log dell`utente nella lista linkata dei log
 };
 
+static int ComparatoreStringa(const void* a, const void* b);
+
 #endif //FINGER_H
