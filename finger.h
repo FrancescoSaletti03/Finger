@@ -19,6 +19,7 @@ struct user{
     enum tipiDiStato stato;
     struct log *primoLog,*ultimoLog; //puntatori al primo  e ultimo log dell`utente nella lista linkata dei log
     struct  user *prossimoUtente; // puntatore al prossimo utente nella lista di utenti
+    int printed;
 };
 
 

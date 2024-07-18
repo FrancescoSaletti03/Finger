@@ -15,7 +15,7 @@ int main(int argc, const char *argv[])
         printS(firstUser);
         return 0;
     }
-    argv[0]=""; // mi permette di non considerare il nome del programma negli argomenti da ordinare
+    argv[0] = "";
     qsort(argv,argc,sizeof(const char*),ComparatoreStringa);
 
     if(argv[argc-1][0] != '-')
@@ -30,13 +30,20 @@ int main(int argc, const char *argv[])
             {
                 flag =1 ;
             }
-            if(argv[i][0] != '-')
+            if(argv[i][0] != '-' && strcmp(argv[i],"") != 0)
             {
-                utentiR[k] = argv[i];
-                k = k + 1;
+                utentiR[i] = argv[i];
+
+            }
+            else
+            {
+                utentiR[i] = NULL;
             }
         }
-        //funzione per la ricerca
+
+        printResearch(firstUser , flag, utentiR,argc);
+
+        return 0;
     }
 
     if(strcmp(argv[1],"-s")==0)

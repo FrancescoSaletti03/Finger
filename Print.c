@@ -3,6 +3,8 @@
 //
 #include <stdio.h>
 #include "Print.h"
+
+#include <ctype.h>
 #include <malloc.h>
 #include <string.h>
 
@@ -49,6 +51,51 @@ void printL(struct user *firstUser)
         currentUser = currentUser -> prossimoUtente;
     }
 }
+void printResearch(struct user *firstUser, int flag,  char *utentiR[], int n)
+{
+    struct user *currentUser = firstUser;
+    struct log *temp;
+    char *stringa = malloc(sizeof(char)* 32);
+    int check;
+
+
+    for(int i = 0; i < n; i = i+1 )
+    {   check = 0;
+        while (currentUser != NULL)
+        {
+            if(utentiR[i] != NULL && currentUser -> printed == 0 && (strcmp(currentUser->username,utentiR[i]) == 0 || (strcasestr(currentUser->username,utentiR[i]) != NULL && flag == 0)))
+            {
+                check = 1;
+                printf("\nLogin: %-28s Name: %s",currentUser -> username, currentUser->nomeReale);
+                printf("\nDirectory: %-24s Shell: %s",currentUser -> directoryPrincipale, currentUser -> shellUtente);
+
+                currentUser -> printed = 1;
+                temp = currentUser -> primoLog;
+
+                if(currentUser -> stato == LOGGATO ){
+                    while(temp != NULL)
+                    {
+                        strncpy(stringa,ctime(&temp -> ultimoTempoLog), 16);
+                        printf("\nOn Since %s on %s",stringa,temp->luogo);
+                        printf("%s",printIdle(temp->idleTime , 'l'));
+                        temp = temp -> prossimoLog;
+                    }
+                }
+                else
+                {
+                    printf("\nNever Logged In.");
+                }
+            }
+            currentUser = currentUser -> prossimoUtente;
+        }
+        if(check == 0 && utentiR[i] != NULL)
+        {
+            printf("\nfinger: %s: no such user.", utentiR[i]);
+        }
+        currentUser = firstUser;
+    }
+}
+
 
 char *printIdle(time_t idle, const char p)
 {
@@ -81,7 +128,7 @@ char *printIdle(time_t idle, const char p)
         {
             sprintf(stringa,"\n%ld seconds idle",secondi);
         }
-        else stringa = "\n";
+        else stringa = "";
 
     }
 

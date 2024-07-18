@@ -27,6 +27,7 @@ struct user *explorePwd(){
         currentUser -> directoryPrincipale = stringCopy( pwd -> pw_dir );
         currentUser -> shellUtente = stringCopy( pwd -> pw_shell );
         currentUser -> stato = NONLOGGATO;
+        currentUser -> printed = 0;
         currentUser -> primoLog = NULL;
         currentUser -> ultimoLog = NULL;
 

@@ -9,4 +9,5 @@
 void printS(struct user *firstUser);
 void printL(struct user *firstUser);
 char *printIdle(time_t idle,char p);
+void printResearch(struct user *firstUser, int flag,  char *utentiR[], int n);
 #endif //PRINT_H
