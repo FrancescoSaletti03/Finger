@@ -17,11 +17,17 @@ void printS(struct user *firstUser)
     struct log *temp;
     while (currentUser != NULL)
     {
-        if(currentUser -> stato == LOGGATO ){
-        temp = currentUser -> primoLog;
+        if(currentUser -> stato == LOGGATO )
+        {
+            temp = currentUser -> primoLog;
             while(temp != NULL)
             {
-                printf("%-32s %-32s %-8s %-8s %-15s", currentUser -> username, currentUser -> nomeReale, temp -> luogo, printIdle(temp->idleTime , 's'), ctime(&temp -> ultimoTempoLog) );
+                printf("%-32s %-32s ", currentUser -> username, splitStringa(currentUser -> nomeReale));
+                if(temp -> private == 0)
+                {
+                    printf("*");
+                }
+                printf("%-8s %-8s %-15s",temp -> luogo, printIdle(temp->idleTime , 's'), ctime(&temp -> ultimoTempoLog) );
                 temp = temp -> prossimoLog;
             }
         }
@@ -38,12 +44,17 @@ void printL(struct user *firstUser)
     {
         temp = currentUser -> primoLog;
         if(currentUser -> stato == LOGGATO ){
-            printf("Login: %-28s Name: %s \n",currentUser -> username, currentUser->nomeReale);
-            printf("Directory: %-24s Shell: %s \n",currentUser -> directoryPrincipale, currentUser -> shellUtente);
+            printf("Login: %-28s Name: %s \n",currentUser -> username, splitStringa(currentUser -> nomeReale));
+            printf("Directory: %-24s Shell: %s",currentUser -> directoryPrincipale, currentUser -> shellUtente);
             while(temp != NULL)
             {
                 strncpy(stringa,ctime(&temp -> ultimoTempoLog), 16);
-                printf("On Since %s on %s",stringa,temp->luogo);
+                printf("\nOn Since %s on ",stringa);
+                if(temp -> private == 0)
+                {
+                    printf("*");
+                }
+                printf("%s",temp->luogo);
                 printf("%s",printIdle(temp->idleTime , 'l'));
                 temp = temp -> prossimoLog;
             }
@@ -51,7 +62,7 @@ void printL(struct user *firstUser)
         currentUser = currentUser -> prossimoUtente;
     }
 }
-void printResearch(struct user *firstUser, int flag,  char *utentiR[], int n)
+void printResearchL(struct user *firstUser, int flag,  char *utentiR[], int n)
 {
     struct user *currentUser = firstUser;
     struct log *temp;
@@ -63,34 +74,91 @@ void printResearch(struct user *firstUser, int flag,  char *utentiR[], int n)
     {   check = 0;
         while (currentUser != NULL)
         {
-            if(utentiR[i] != NULL && currentUser -> printed == 0 && (strcmp(currentUser->username,utentiR[i]) == 0 || (strcasestr(currentUser->username,utentiR[i]) != NULL && flag == 0)))
+            if(utentiR[i] != NULL && (strcmp(currentUser->username,utentiR[i]) == 0 || (strcasestr(currentUser->username,utentiR[i]) != NULL && flag == 0)))
             {
                 check = 1;
-                printf("\nLogin: %-28s Name: %s",currentUser -> username, currentUser->nomeReale);
-                printf("\nDirectory: %-24s Shell: %s",currentUser -> directoryPrincipale, currentUser -> shellUtente);
-
-                currentUser -> printed = 1;
-                temp = currentUser -> primoLog;
-
-                if(currentUser -> stato == LOGGATO ){
-                    while(temp != NULL)
-                    {
-                        strncpy(stringa,ctime(&temp -> ultimoTempoLog), 16);
-                        printf("\nOn Since %s on %s",stringa,temp->luogo);
-                        printf("%s",printIdle(temp->idleTime , 'l'));
-                        temp = temp -> prossimoLog;
-                    }
-                }
-                else
+                if(currentUser->printed == 0)
                 {
-                    printf("\nNever Logged In.");
+                    printf("Login: %-28s Name: %s",currentUser -> username, splitStringa(currentUser -> nomeReale));
+                    printf("\nDirectory: %-24s Shell: %s",currentUser -> directoryPrincipale, currentUser -> shellUtente);
+
+                    currentUser -> printed = 1;
+                    temp = currentUser -> primoLog;
+
+                    if(currentUser -> stato == LOGGATO ){
+                        while(temp != NULL)
+                        {
+                            strncpy(stringa,ctime(&temp -> ultimoTempoLog), 16);
+                            printf("\nOn Since %s on ",stringa);
+                            if(temp -> private == 0)
+                            {
+                                printf("*");
+                            }
+                            printf("%s",temp->luogo);
+                            printf("%s",printIdle(temp->idleTime , 'l'));
+                            temp = temp -> prossimoLog;
+                        }
+                    }
+                    else
+                    {
+                        printf("\nNever Logged In.\n");
+                    }
                 }
             }
             currentUser = currentUser -> prossimoUtente;
         }
         if(check == 0 && utentiR[i] != NULL)
         {
-            printf("\nfinger: %s: no such user.", utentiR[i]);
+            printf("finger: %s: no such user.\n", utentiR[i]);
+        }
+        currentUser = firstUser;
+    }
+}
+
+void printResearchS(struct user *firstUser, int flag,  char *utentiR[], int n)
+{
+    struct user *currentUser = firstUser;
+    struct log *temp;
+    int check;
+
+    printf("%-32s %-32s %-8s %-8s %-15s \n","Login","Name", "Tty", "Idle", "Login Time");
+    for(int i = 0; i < n; i = i+1 )
+    {   check = 0;
+        while (currentUser != NULL)
+        {
+            if(utentiR[i] != NULL && (strcmp(currentUser->username,utentiR[i]) == 0 || (strcasestr(currentUser->username,utentiR[i]) != NULL && flag == 0)))
+            {
+                check = 1;
+                if(currentUser->printed == 0)
+                {
+                    currentUser -> printed = 1;
+                    temp = currentUser -> primoLog;
+
+                    if(currentUser -> stato == LOGGATO ){
+                        while(temp != NULL)
+                        {
+                            printf("%-32s %-32s ", currentUser -> username, splitStringa(currentUser -> nomeReale));
+                            if(temp -> private == 0)
+                            {
+                                printf("*");
+                            }
+                            printf("%-8s %-8s %-15s",temp -> luogo, printIdle(temp->idleTime , 's'), ctime(&temp -> ultimoTempoLog) );
+                            temp = temp -> prossimoLog;
+                        }
+                    }
+                    else
+                    {   printf("%-32s %-32s ", currentUser -> username, splitStringa(currentUser -> nomeReale));
+                        char t = '*';
+                        char st[]="No Logins";
+                        printf("%-8c %-8c %-15s \n",t, t, st);
+                    }
+                }
+            }
+            currentUser = currentUser -> prossimoUtente;
+        }
+        if(check == 0 && utentiR[i] != NULL)
+        {
+            printf("finger: %s: no such user.\n", utentiR[i]);
         }
         currentUser = firstUser;
     }
@@ -118,19 +186,25 @@ char *printIdle(time_t idle, const char p)
     {
         if(ore != 0)
         {
-            sprintf(stringa,"\n%ld hours %ld minutes %ld seconds idle",ore,minuti,secondi);
+            sprintf(stringa,"\n%ld hours %ld minutes %ld seconds idle\n",ore,minuti,secondi);
         }
         else if(minuti !=0)
         {
-            sprintf(stringa,"\n%ld minutes %ld seconds idle",minuti,secondi);
+            sprintf(stringa,"\n%ld minutes %ld seconds idle\n",minuti,secondi);
         }
         else if(secondi != 0)
         {
-            sprintf(stringa,"\n%ld seconds idle",secondi);
+            sprintf(stringa,"\n%ld seconds idle\n",secondi);
         }
         else stringa = "";
 
     }
 
     return  stringa;
+}
+
+char *splitStringa(char *s)
+{
+    char *token = strtok(s,",");
+    return token;
 }

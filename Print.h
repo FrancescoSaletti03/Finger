@@ -9,5 +9,7 @@
 void printS(struct user *firstUser);
 void printL(struct user *firstUser);
 char *printIdle(time_t idle,char p);
-void printResearch(struct user *firstUser, int flag,  char *utentiR[], int n);
+void printResearchL(struct user *firstUser, int flag,  char *utentiR[], int n);
+void printResearchS(struct user *firstUser, int flag,  char *utentiR[], int n);
+char *splitStringa(char *s);
 #endif //PRINT_H

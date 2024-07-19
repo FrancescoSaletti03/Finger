@@ -58,52 +58,66 @@ void exploreUTMP(struct user *firstUser){
     while ((utmpData = getutent()) != NULL) {
         currentUser = firstUser;
 
-        while(currentUser != NULL) {
-            if(strcmp(utmpData -> ut_user, currentUser -> username) == 0)
+        while(currentUser != NULL)
             {
-                struct log *Temp = malloc(sizeof(struct log));
-                Temp -> luogo = stringCopy(utmpData -> ut_line);
-                currentUser -> stato = LOGGATO;
-                Temp -> ultimoTempoLog = utmpData -> ut_time;
-                Temp -> idleTime = calcolateIdle(utmpData -> ut_line);
-                Temp -> prossimoLog = NULL;
-
-                if(currentUser -> primoLog == NULL)
+                if(strcmp(utmpData -> ut_user, currentUser -> username) == 0)
                 {
-                    currentUser -> primoLog = Temp;
-                    currentUser -> ultimoLog = Temp;
+                    struct log *Temp = malloc(sizeof(struct log));
+                    Temp -> luogo = stringCopy(utmpData -> ut_line);
+                    currentUser -> stato = LOGGATO;
+                    Temp -> ultimoTempoLog = utmpData -> ut_time;
+                    Temp -> idleTime = calcolateIdle(utmpData -> ut_line);
+                    Temp -> private = calcolatePermit(utmpData -> ut_line);
+                    Temp -> prossimoLog = NULL;
+
+                    if(currentUser -> primoLog == NULL)
+                    {
+                        currentUser -> primoLog = Temp;
+                        currentUser -> ultimoLog = Temp;
+                    }
+                    else
+                    {
+                        currentUser -> ultimoLog -> prossimoLog = Temp;
+                        currentUser -> ultimoLog = Temp;
+                    }
+                    currentUser = NULL;
                 }
                 else
-                {
-                    currentUser -> ultimoLog -> prossimoLog = Temp;
-                    currentUser -> ultimoLog = Temp;
-                }
-                currentUser = NULL;
-            }else
-            currentUser = currentUser -> prossimoUtente;
+                currentUser = currentUser -> prossimoUtente;
         }
     }
 }
 
 time_t calcolateIdle(char var2[]){
     struct stat *info = malloc(sizeof(struct stat));
-    char *temp;
-    int size = sizeof(char) * (strlen(var2) + strlen(_PATH_DEV) + 1 );
-    time_t result;
-    temp = malloc(strlen(var2));
+    char *temp = malloc(strlen(var2));
     strcpy(temp,_PATH_DEV);
     strcat(temp,var2);
     if(access(temp,F_OK) != 0) return 0; //controllo necessario per vedere se il file esiste (perchè in alcune distribuzioni di linux, ci sono console di accesso non presenti in dev)
     stat(temp,info);
-    result = time(NULL) - info -> st_mtim.tv_sec;
+    time_t const result = time(NULL) - info -> st_mtim.tv_sec;
     return  result;
 }
 
-char *stringCopy(char *var2)
+int calcolatePermit(char var2[])
 {
-    char *var1;
-    int size = sizeof(char) * (strlen(var2) + 1);
-    var1 = malloc(size);
+    struct stat *info = malloc(sizeof(struct stat));
+    char *temp = malloc(strlen(var2));
+    strcpy(temp,_PATH_DEV);
+    strcat(temp,var2);
+    if(access(temp,F_OK) != 0) return 1;
+    stat(temp,info);
+    if(info -> st_mode & PERMIT)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+char *stringCopy(char const *var2)
+{
+    int const size = sizeof(char) * (strlen(var2) + 1);
+    char *var1 = malloc(size);
     strcpy(var1,var2);
     return var1;
 }

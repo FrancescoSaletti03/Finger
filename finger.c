@@ -33,15 +33,20 @@ int main(int argc, const char *argv[])
             if(argv[i][0] != '-' && strcmp(argv[i],"") != 0)
             {
                 utentiR[i] = argv[i];
-
             }
             else
             {
                 utentiR[i] = NULL;
             }
         }
-
-        printResearch(firstUser , flag, utentiR,argc);
+        if(strcmp(argv[1],"-s")==0)
+        {
+            printResearchS(firstUser,flag,utentiR,argc);
+        }
+        else
+        {
+            printResearchL(firstUser , flag, utentiR,argc);
+        }
 
         return 0;
     }

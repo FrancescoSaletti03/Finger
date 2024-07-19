@@ -25,6 +25,7 @@ struct user{
 
 struct log{
     char *luogo;
+    int private;
     time_t ultimoTempoLog;
     time_t idleTime;
     struct log *prossimoLog; //puntatore al prossimo log dell`utente nella lista linkata dei log

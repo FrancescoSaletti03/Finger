@@ -6,6 +6,7 @@
 #define SOEXPLORER_H
 #include "finger.h"
 #include <time.h>
+#define PERMIT 00220
 
 struct user *explorePwd();
 
@@ -13,6 +14,8 @@ void exploreUTMP(struct user *firstUser);
 
 time_t calcolateIdle(char var2[]);
 
-char *stringCopy(char *var2);
+char *stringCopy(char const *var2);
+
+int calcolatePermit(char var2[]);
 
 #endif //SOEXPLORER_H
