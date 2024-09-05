@@ -8,16 +8,24 @@
 
 int main(int argc, const char *argv[])
 {
+    //inizializzo la mia lista di utenti e la popolo con tutti gli utenti del sistema
     struct user *firstUser = explorePwd();
+
+    //prendo le informazioni su tutti gli utenti loggati sul sistema
     exploreUTMP(firstUser);
+
+    //se è finger senza argomenti aggiuntivi, stampo la ¨versione¨ -s
     if(argc == 1)
     {
         printS(firstUser);
         return 0;
     }
     argv[0] = "";
+
+    //ordino i miei argomenti in ordine alfabetico
     qsort(argv,argc,sizeof(const char*),ComparatoreStringa);
 
+    //controllo tutti gli argomenti e vedo se c`è un utente da ricercare tra di essi
     if(argv[argc-1][0] != '-')
     {
         const char *utentiR[argc];
@@ -25,11 +33,12 @@ int main(int argc, const char *argv[])
         int flag = 0;
 
         for(int i = 0; i < argc; i = i + 1)
-        {
+        {   //nel caso c`è un -m imposto ad 1 il flag corrispondente
             if(strcmp(argv[i],"-m")==0)
             {
                 flag =1 ;
             }
+            //ogni argomento corrispondetne al nome di un utente, viene messo in un vettore
             if(argv[i][0] != '-' && strcmp(argv[i],"") != 0)
             {
                 utentiR[i] = argv[i];
@@ -39,6 +48,7 @@ int main(int argc, const char *argv[])
                 utentiR[i] = NULL;
             }
         }
+        //a seconda dei parametri passati in imput, stampo o la versione -l o quella -s degli utenti cercati
         if(strcmp(argv[1],"-s")==0)
         {
             printResearchS(firstUser,flag,utentiR,argc);
@@ -51,6 +61,7 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
+    //stampa di tutti gli utenti loggati a seconda dei parametri passati in input
     if(strcmp(argv[1],"-s")==0)
     {
         printS(firstUser);

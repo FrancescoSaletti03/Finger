@@ -62,7 +62,7 @@ void printL(struct user *firstUser)
         currentUser = currentUser -> prossimoUtente;
     }
 }
-void printResearchL(struct user *firstUser, int flag,  char *utentiR[], int n)
+void printResearchL(struct user *firstUser, int flag,  const char *utentiR[], int n)
 {
     struct user *currentUser = firstUser;
     struct log *temp;
@@ -113,9 +113,10 @@ void printResearchL(struct user *firstUser, int flag,  char *utentiR[], int n)
         }
         currentUser = firstUser;
     }
+    free(stringa);
 }
 
-void printResearchS(struct user *firstUser, int flag,  char *utentiR[], int n)
+void printResearchS(struct user *firstUser, int flag, const char *utentiR[], int n)
 {
     struct user *currentUser = firstUser;
     struct log *temp;
