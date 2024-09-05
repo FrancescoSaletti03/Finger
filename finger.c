@@ -8,7 +8,7 @@
 
 int main(int argc, const char *argv[])
 {
-    //inizializzo la mia lista di utenti e la popolo con tutti gli utenti del sistema
+    //inizializzo la mia lista di utenti(struct user) e la popolo con tutti gli utenti del sistema
     struct user *firstUser = explorePwd();
 
     //prendo le informazioni su tutti gli utenti loggati sul sistema
